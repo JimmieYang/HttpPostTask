@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mBtn.setVisibility(View.GONE);
             TextView view = (TextView) findViewById(R.id.view);
             view.setText(JsonUtil.getJsonUserInfoString(userInfo));
-        }else{
+        } else {
             mBtn.setOnClickListener(this);
         }
     }
@@ -68,6 +68,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         new PostTask().execute(HTTP_URL);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mWebView.canGoBack()) {
+            mWebView.goBack();
+        } else
+            super.onBackPressed();
     }
 
 
@@ -97,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // Inner Classes ///////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * 异步加载网络请求
      */
