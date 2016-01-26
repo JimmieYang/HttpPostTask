@@ -64,6 +64,10 @@ public class WebViewFragment extends Fragment implements View.OnClickListener {
         mBtn.setOnClickListener(this);
     }
 
+    public WebView getmWebView() {
+        return mWebView;
+    }
+
     // Interface methods /////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void onClick(View v) {

@@ -11,6 +11,9 @@ import com.example.jimmie.httpposttask.utils.PreferencesUtil;
 public class MainActivity extends Activity {
     private final String TAG = this.getClass().getSimpleName();
 
+    private InfoFragment info;
+    private WebViewFragment webview;
+
     // Lifecycle methods ///////////////////////////////////////////////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +28,20 @@ public class MainActivity extends Activity {
     private void init() {
         String userInfo = PreferencesUtil.getJsonUserInfo(this, PreferencesUtil.USER_INFO);
         if (userInfo != null) {
-            InfoFragment info = new InfoFragment();
+            info = new InfoFragment();
             getFragmentManager().beginTransaction().replace(R.id.content, info).commit();
         } else {
-            WebViewFragment webview = new WebViewFragment();
+            webview = new WebViewFragment();
             getFragmentManager().beginTransaction().replace(R.id.content, webview).commit();
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+        if (webview != null && webview.getmWebView().canGoBack())
+            webview.getmWebView().goBack();
+        else
+            super.onBackPressed();
+    }
 }
