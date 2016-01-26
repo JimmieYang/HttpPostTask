@@ -56,6 +56,11 @@ public class WebViewFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        mBtn.setOnClickListener(null);
+    }
+
     // Initialization ///////////////////////////////////////////////////////////////////////////////////////////////
     private void init(View view) {
         mWebView = (WebView) view.findViewById(R.id.webview);
