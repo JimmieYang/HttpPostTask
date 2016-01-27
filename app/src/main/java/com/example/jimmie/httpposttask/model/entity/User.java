@@ -1,4 +1,4 @@
-package com.example.jimmie.httpposttask.model;
+package com.example.jimmie.httpposttask.model.entity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
