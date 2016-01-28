@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -27,6 +26,7 @@ import com.example.jimmie.httpposttask.model.interfaces.OnLoginFinishedListener;
 import com.example.jimmie.httpposttask.ui.LoginActivity;
 import com.example.jimmie.httpposttask.utils.DeviceUtil;
 import com.example.jimmie.httpposttask.utils.JsonUtil;
+import com.example.jimmie.httpposttask.utils.PreferencesUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -77,9 +77,8 @@ public class LoginControlImpl implements LoginControl {
 
     private PostEntiy getPostEntity(Context context) {
         PostEntiy entiy = new PostEntiy();
-        entiy.setUsernames("434523302,lakdsjfl,algjkafsjd");
+        entiy.setUsernames(PreferencesUtil.getUserInfo(context, PreferencesUtil.USER_NAMES) + "");
         entiy.setDevice(new DeviceUtil(context).getDeviceParams());
-        Log.d(TAG, new DeviceUtil(context).getDeviceParams());
         return entiy;
     }
 
@@ -122,7 +121,6 @@ public class LoginControlImpl implements LoginControl {
         @JavascriptInterface
         public void getBodyContent(String result) {
             if (result != null && result != "" && result.startsWith("{")) {
-                Log.d(TAG,"InJavaScriptObj");
                 User user = new User();
                 user.parse(JsonUtil.getJsonResult(result));
                 webListener.onDataGeted(result);
@@ -161,7 +159,7 @@ public class LoginControlImpl implements LoginControl {
             boolean isLogin = false;
             if (!isRedirected) {
                 if (url.startsWith(Const.START_WITH_URL)) {
-                    super.onPageFinished(view, url);
+//                    super.onPageFinished(view, url);
                     view.loadUrl(Const.JAVESCRIP_METHOD);
                     isLogin = true;
                 }

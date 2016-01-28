@@ -2,6 +2,7 @@ package com.example.jimmie.httpposttask.ui;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
@@ -73,12 +74,53 @@ public class LoginActivity extends Activity {
         public void onDataGeted(String result) {
             String userInfo = JsonUtil.getJsonResult(result);
             if (userInfo != null && !userInfo.equals("")) {
-                PreferencesUtil.saveUserInfo(LoginActivity.this, PreferencesUtil.USER_INFO, userInfo);
+                PreferencesUtil.saveUserInfo(LoginActivity.this, PreferencesUtil.USER, userInfo);
                 User user = new User(userInfo);
-                String username = user.getUsername();
+                saveNames(LoginActivity.this, user.getUsername());
             }
             finish();
         }
+    }
+
+    private void saveNames(Context context, String username) {
+        boolean isRepeat = false;
+        String namesStr = PreferencesUtil.getUserInfo(context, PreferencesUtil.USER_NAMES) + "";
+        String[] names = namesStr.split(",");
+        int length = names.length;
+        if (length != 0) {
+            for (int i = 0; i < length; i++) {
+                if (username.equalsIgnoreCase(names[i])) {
+                    isRepeat = true;
+                    if (i == 0)
+                        break;
+                    String temp = names[i];
+                    for (int j = i; j <= 1; j--) {
+                        names[j] = names[j - 1];
+                    }
+                    names[0] = temp;
+                    break;
+                }
+            }
+            if (!isRepeat){
+                for (int i = 1;i<length+1;i++){
+                    names[i] = names[i - 1];
+                }
+                names[0] = username;
+            }
+        }else{
+            names[0] = username;
+        }
+
+        StringBuffer sb = new StringBuffer();
+        for (int i =0;i<names.length;i++){
+            if (i==names.length-1){
+                sb.append(names[i]+"");
+            }else{
+                sb.append(names[i]+",");
+            }
+        }
+        PreferencesUtil.saveUserInfo(context, PreferencesUtil.USER_NAMES, sb.toString());
+
     }
 
 }

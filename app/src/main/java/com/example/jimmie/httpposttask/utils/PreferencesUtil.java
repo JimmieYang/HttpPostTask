@@ -8,6 +8,9 @@ import android.content.SharedPreferences;
  */
 public class PreferencesUtil {
     public static final String USER_INFO = "user_info";
+    public static final String USER ="user";
+    public static final String USER_NAMES ="usernames";
+
 
     public static void saveUserInfo(Context context, String name, String value) {
         SharedPreferences userInfo = context.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE);
@@ -16,9 +19,9 @@ public class PreferencesUtil {
         editor.commit();
     }
 
-    public static String getJsonUserInfo(Context context, String name) {
+    public static String getUserInfo(Context context, String name) {
         SharedPreferences settings = context.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE);
-        String result = settings.getString(name, null);
+        String result = settings.getString(name,"");
         return result;
     }
 }
