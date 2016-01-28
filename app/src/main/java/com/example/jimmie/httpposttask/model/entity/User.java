@@ -1,12 +1,14 @@
 package com.example.jimmie.httpposttask.model.entity;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Created by 4399-jimmie on 2016/1/26.
  */
-public class User {
+public class User  {
     private final String RESULT = "result";
     private final String UID = "uid";
     private final String USERNAME = "username";
@@ -37,8 +39,9 @@ public class User {
 
     public void parse(String jsonStr) {
         try {
-            JSONObject object = new JSONObject(jsonStr);
-            JSONObject result = object.optJSONObject(RESULT);
+            JSONObject result = new JSONObject(jsonStr);
+            Log.d("LoginControlImpl", "jsonStr:" + jsonStr);
+            Log.d("LoginControlImpl", "jsonStr.length:" + result.length());
             uid = result.optString(UID);
             username = result.optString(USERNAME);
             bindedphone = result.optString(BINDEDPHONE);
@@ -83,4 +86,5 @@ public class User {
     public String getAccount_type() {
         return account_type;
     }
+
 }

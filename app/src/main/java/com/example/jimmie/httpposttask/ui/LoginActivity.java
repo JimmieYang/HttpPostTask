@@ -11,20 +11,23 @@ import android.widget.ProgressBar;
 
 import com.android.volley.VolleyError;
 import com.example.jimmie.httpposttask.R;
-import com.example.jimmie.httpposttask.model.control.LoginModelImpl;
-import com.example.jimmie.httpposttask.model.interfaces.LoginModel;
+import com.example.jimmie.httpposttask.app.AppControl;
+import com.example.jimmie.httpposttask.model.control.LoginControl;
+import com.example.jimmie.httpposttask.model.entity.User;
 import com.example.jimmie.httpposttask.model.interfaces.OnLoadLoginViewListener;
 import com.example.jimmie.httpposttask.model.interfaces.OnLoadWebViewListener;
+import com.example.jimmie.httpposttask.utils.JsonUtil;
+import com.example.jimmie.httpposttask.utils.PreferencesUtil;
 
 /**
  * Created by 4399-1126 on 2016/1/26.
  */
-public class LoginActivity extends Activity implements View.OnClickListener {
+public class LoginActivity extends Activity {
 
     private WebView mWebView;
     private ProgressBar mPb;
     private Button mBtnBack;
-    private LoginModel mLoginModel;
+    LoginControl control;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,34 +37,25 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     private void init() {
-        mLoginModel = new LoginModelImpl();
         mWebView = (WebView) findViewById(R.id.webview);
         mPb = (ProgressBar) findViewById(R.id.pb);
         mBtnBack = (Button) findViewById(R.id.web_back_btn);
-        mBtnBack.setOnClickListener(this);
-
-        mLoginModel.loadLoginView(this, new OnLoadLoginViewListener() {
+        control = ((AppControl) getApplication()).getLoginModel();
+        control.loadLoginView(this, new OnLoadLoginViewListener() {
             @Override
             public void onSucceed(String url) {
-                mLoginModel.loadWebView(mWebView, url, new MyOnLoadWebListener());
+                control.loadWebView(mWebView, url, new MyOnLoadWebListener());
             }
+
             @Override
             public void onFailed(VolleyError error) {
 
             }
         });
+
+        control.clickBackBtn(mBtnBack, mWebView, this);
+
     }
-
-
-    @Override
-    public void onClick(View v) {
-        if (mWebView != null && mWebView.canGoBack()) {
-            mWebView.goBack();
-        } else {
-            this.finish();
-        }
-    }
-
 
     class MyOnLoadWebListener implements OnLoadWebViewListener {
 
@@ -71,13 +65,19 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         }
 
         @Override
-        public void onPageFinished(WebView view, String url,boolean isLogin) {
+        public void onPageFinished(WebView view, String url, boolean isLogin) {
             mPb.setVisibility(View.GONE);
         }
 
         @Override
         public void onDataGeted(String result) {
-            System.out.println(result);
+            String userInfo = JsonUtil.getJsonResult(result);
+            if (userInfo != null && !userInfo.equals("")) {
+                PreferencesUtil.saveUserInfo(LoginActivity.this, PreferencesUtil.USER_INFO, userInfo);
+                User user = new User(userInfo);
+                String username = user.getUsername();
+            }
+            finish();
         }
     }
 

@@ -50,4 +50,7 @@ public class Const {
     public static final String JAVESCRIP_METHOD = "javascript:window.onSumbit.getBodyContent(document.body.innerHTML);";
     // 对比此URL,看是否登录成功
     public static final String START_WITH_URL = "http://m.4399api.com/openapi/oauth-callback";
+
+    public static final String DATABASE_NAME = "login_data";
+    public static final int DATABASE_VERSION = 1;
 }

@@ -29,7 +29,6 @@ public class JsonUtil {
         String result = null;
         try {
             object = new JSONObject(jsonString);
-
             result = object.optString(RESULT);
         } catch (JSONException e) {
             e.printStackTrace();
