@@ -11,6 +11,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -72,6 +73,13 @@ public class LoginControlImpl implements LoginControl {
                 return params;
             }
         };
+        request.setRetryPolicy( // 设置网络超时和重试参数
+                new DefaultRetryPolicy(
+                        10000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,//默认最大尝试次数
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                )
+        );
         mQueue.add(request);
     }
 
@@ -108,7 +116,6 @@ public class LoginControlImpl implements LoginControl {
         view.loadUrl(url);
         view.setWebViewClient(new MyWebviewClient());
     }
-
 
 
     /**
