@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.example.jimmie.httpposttask.model.constance.Const;
 
@@ -77,6 +78,7 @@ public class DeviceUtil {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Log.d("adfds",object.toString());
         return object.toString();
     }
 }

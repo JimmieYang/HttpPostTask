@@ -1,7 +1,5 @@
 package com.example.jimmie.httpposttask.model.entity;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,8 +38,6 @@ public class User  {
     public void parse(String jsonStr) {
         try {
             JSONObject result = new JSONObject(jsonStr);
-            Log.d("LoginControlImpl", "jsonStr:" + jsonStr);
-            Log.d("LoginControlImpl", "jsonStr.length:" + result.length());
             uid = result.optString(UID);
             username = result.optString(USERNAME);
             bindedphone = result.optString(BINDEDPHONE);

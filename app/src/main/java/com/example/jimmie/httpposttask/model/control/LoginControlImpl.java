@@ -110,7 +110,6 @@ public class LoginControlImpl implements LoginControl {
     }
 
 
-    // Inner Classes ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * 获取webView的内容,存入本地 (api >= 17 时需要加@JavascriptInterface)
@@ -159,7 +158,6 @@ public class LoginControlImpl implements LoginControl {
             boolean isLogin = false;
             if (!isRedirected) {
                 if (url.startsWith(Const.START_WITH_URL)) {
-//                    super.onPageFinished(view, url);
                     view.loadUrl(Const.JAVESCRIP_METHOD);
                     isLogin = true;
                 }

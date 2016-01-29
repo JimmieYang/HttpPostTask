@@ -18,9 +18,13 @@ import com.example.jimmie.httpposttask.app.AppControl;
 import com.example.jimmie.httpposttask.model.control.LoginControl;
 import com.example.jimmie.httpposttask.model.entity.User;
 import com.example.jimmie.httpposttask.model.interfaces.OnLoginFinishedListener;
+import com.example.jimmie.httpposttask.utils.PreferencesUtil;
 
 public class MainActivity extends Activity implements View.OnClickListener {
     private final String TAG = this.getClass().getSimpleName();
+
+    private ImageView imgView;
+    private TextView textView;
 
     // Lifecycle methods ///////////////////////////////////////////////////////////////////////////////////////////
     @Override
@@ -30,6 +34,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.post_btn).setOnClickListener(this);
+        imgView = (ImageView) findViewById(R.id.img);
+        textView = (TextView) findViewById(R.id.text);
+        String userInfo = PreferencesUtil.getUserInfo(this, PreferencesUtil.USER);
+        if (userInfo != null && !"".equals(userInfo)) {
+            showInfo(new User(userInfo));
+        }
 
     }
 
@@ -48,7 +58,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void showInfo(User user) {
-        final ImageView imgView = (ImageView) findViewById(R.id.img);
         RequestQueue mQueue = Volley.newRequestQueue(this);
         ImageRequest request = new ImageRequest(user.getAvatar_middle(), new Response.Listener<Bitmap>() {
             @Override
@@ -67,7 +76,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         sb.append(isNotEmpty(user.getUsername()) ? user.getUsername() + "\n" : null);
         sb.append(isNotEmpty(user.getNick()) ? user.getNick() + "\n" : null);
         sb.append(isNotEmpty(user.getBindedphone()) ? user.getBindedphone() : null);
-        ((TextView)findViewById(R.id.text)).setText(sb.toString());
+        textView.setText(sb.toString());
 
     }
 
