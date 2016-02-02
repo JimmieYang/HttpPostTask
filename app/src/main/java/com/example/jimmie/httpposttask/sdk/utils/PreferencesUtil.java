@@ -1,8 +1,7 @@
-package com.example.jimmie.httpposttask.utils;
+package com.example.jimmie.httpposttask.sdk.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +73,6 @@ public class PreferencesUtil {
             } else {
                 sb.append(namesList.get(i) + ",");
             }
-            Log.d("dsaf", "sb.toString" + sb.toString());
         }
         PreferencesUtil.saveUserInfo(context, PreferencesUtil.USER_NAMES, sb.toString());
     }

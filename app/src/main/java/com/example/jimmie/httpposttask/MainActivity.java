@@ -15,10 +15,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.jimmie.httpposttask.app.AppControl;
-import com.example.jimmie.httpposttask.model.control.LoginControl;
-import com.example.jimmie.httpposttask.model.entity.User;
-import com.example.jimmie.httpposttask.model.interfaces.OnLoginFinishedListener;
-import com.example.jimmie.httpposttask.utils.PreferencesUtil;
+import com.example.jimmie.httpposttask.sdk.entity.User;
+import com.example.jimmie.httpposttask.sdk.model.OnLoginFinishedListener;
+import com.example.jimmie.httpposttask.sdk.controller.LoginOperator;
+import com.example.jimmie.httpposttask.sdk.utils.PreferencesUtil;
 
 public class MainActivity extends Activity implements View.OnClickListener {
     private final String TAG = this.getClass().getSimpleName();
@@ -26,7 +26,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ImageView imgView;
     private TextView textView;
 
-    // Lifecycle methods ///////////////////////////////////////////////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -35,7 +34,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         findViewById(R.id.post_btn).setOnClickListener(this);
         imgView = (ImageView) findViewById(R.id.img);
-        textView = (TextView) findViewById(R.id.text);
+        textView = (TextView) findViewById(R.id.showtext);
         String userInfo = PreferencesUtil.getUserInfo(this, PreferencesUtil.USER);
         if (userInfo != null && !"".equals(userInfo)) {
             showInfo(new User(userInfo));
@@ -46,12 +45,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        LoginControl control = ((AppControl) getApplication()).getLoginModel();
-        control.login(this, new OnLoginFinishedListener() {
+        LoginOperator operator = ((AppControl) getApplication()).getLoginOperator();
+        operator.login(this, new OnLoginFinishedListener() {
             public void onLoginFinished(boolean isSuccessful, User user) {
-                if (isSuccessful)
+                if (isSuccessful) {
                     showInfo(user);
-                else
+                    Toast.makeText(MainActivity.this, "登录成功!", Toast.LENGTH_SHORT).show();
+                } else
                     Toast.makeText(MainActivity.this, "登录失败!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -70,14 +70,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 imgView.setImageResource(R.mipmap.ic_launcher);
             }
         });
-
         mQueue.add(request);
-        StringBuffer sb = new StringBuffer();
-        sb.append(isNotEmpty(user.getUsername()) ? user.getUsername() + "\n" : null);
-        sb.append(isNotEmpty(user.getNick()) ? user.getNick() + "\n" : null);
-        sb.append(isNotEmpty(user.getBindedphone()) ? user.getBindedphone() : null);
-        textView.setText(sb.toString());
 
+        final StringBuffer sb = new StringBuffer();
+        sb.append(isNotEmpty(user.getUsername()) ? user.getUsername() + "\n" : "");
+        sb.append(isNotEmpty(user.getNick()) ? user.getNick() + "\n" : "");
+        sb.append(isNotEmpty(user.getBindedphone()) ? user.getBindedphone() : "");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                textView.setText(sb.toString());
+            }
+        });
     }
 
     private boolean isNotEmpty(String str) {

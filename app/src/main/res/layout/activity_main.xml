@@ -23,7 +23,7 @@
             android:layout_alignParentLeft="true" />
 
         <TextView
-            android:id="@+id/text"
+            android:id="@+id/showtext"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_alignLeft="@id/img"

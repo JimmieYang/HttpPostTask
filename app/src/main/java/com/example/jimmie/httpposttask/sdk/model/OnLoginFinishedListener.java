@@ -1,6 +1,6 @@
-package com.example.jimmie.httpposttask.model.interfaces;
+package com.example.jimmie.httpposttask.sdk.model;
 
-import com.example.jimmie.httpposttask.model.entity.User;
+import com.example.jimmie.httpposttask.sdk.entity.User;
 
 /**
  * Created by 4399-1126 on 2016/1/26.

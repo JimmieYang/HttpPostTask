@@ -1,4 +1,4 @@
-package com.example.jimmie.httpposttask.model.entity;
+package com.example.jimmie.httpposttask.sdk.entity;
 
 /**
  * Created by 4399-1126 on 2016/1/27.

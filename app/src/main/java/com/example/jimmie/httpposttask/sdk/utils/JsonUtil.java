@@ -1,4 +1,4 @@
-package com.example.jimmie.httpposttask.utils;
+package com.example.jimmie.httpposttask.sdk.utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;

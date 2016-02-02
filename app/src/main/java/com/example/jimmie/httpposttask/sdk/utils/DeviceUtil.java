@@ -1,4 +1,4 @@
-package com.example.jimmie.httpposttask.utils;
+package com.example.jimmie.httpposttask.sdk.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-import com.example.jimmie.httpposttask.model.constance.Const;
+import com.example.jimmie.httpposttask.sdk.constance.Const;
 
 import org.json.JSONException;
 import org.json.JSONObject;

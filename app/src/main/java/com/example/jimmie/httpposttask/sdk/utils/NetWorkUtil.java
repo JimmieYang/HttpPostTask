@@ -1,4 +1,4 @@
-package com.example.jimmie.httpposttask.utils;
+package com.example.jimmie.httpposttask.sdk.utils;
 
 /**
  * Created by 4399-1126 on 2016/1/27.

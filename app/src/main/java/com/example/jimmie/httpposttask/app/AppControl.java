@@ -2,23 +2,22 @@ package com.example.jimmie.httpposttask.app;
 
 import android.app.Application;
 
-import com.example.jimmie.httpposttask.model.control.LoginControlImpl;
-import com.example.jimmie.httpposttask.model.control.LoginControl;
+import com.example.jimmie.httpposttask.sdk.controller.LoginOperator;
 
 /**
  * Created by 4399-1126 on 2016/1/28.
  */
 public class AppControl extends Application {
-    private LoginControl loginModel;
+    private LoginOperator operator;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        loginModel = new LoginControlImpl();
+        operator = new LoginOperator();
     }
 
-    public LoginControl getLoginModel() {
-        return loginModel;
+    public LoginOperator getLoginOperator() {
+        return operator;
     }
 }
