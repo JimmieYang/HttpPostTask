@@ -1,6 +1,10 @@
 package com.example.jimmie.httpposttask.sdk.model;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -24,6 +28,8 @@ import java.util.Map;
  * Created by 4399-1126 on 2016/2/1.
  */
 public class LoginModel {
+
+    OnWebViewDataListener mListener;
 
     public User getUserInfo(String result) {
         String userInfo = JsonUtil.getJsonResult(result);
@@ -86,5 +92,61 @@ public class LoginModel {
         entity.setUsernames(PreferencesUtil.getUserInfo(context, PreferencesUtil.USER_NAMES) + "");
         entity.setDevice(new DeviceUtil(context).getDeviceParams());
         return entity;
+    }
+
+    public void setWebViewDataConfig(WebView view, OnWebViewDataListener listener) {
+        this.mListener = listener;
+        view.setWebViewClient(new MyWebviewClient());
+        view.addJavascriptInterface(new InJavaScriptObj(), Const.JAVESCRIP_METHOD_NAME);
+    }
+
+    /**
+     * 获取webView的内容,存入本地 (api >= 17 时需要加@JavascriptInterface)
+     *
+     * @author jimmie
+     */
+    final class InJavaScriptObj {
+        @JavascriptInterface
+        public void getBodyContent(String result) {
+            if (result != null && result != "" && result.startsWith("{")) {
+                mListener.onResultReturn(result);
+            }
+        }
+    }
+
+    /**
+     * 辅助WebView处理各种通知与请求事件
+     *
+     * @author jimmie
+     */
+    class MyWebviewClient extends WebViewClient {
+        private boolean isRedirected; // onPageFinished多次调用
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            if (!isRedirected) {
+                mListener.onPageStarted(view, url, favicon);
+            }
+            isRedirected = false;
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            isRedirected = true;
+            return true;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            if (!isRedirected) {
+                if (url.startsWith(Const.START_WITH_URL)) {
+                    view.loadUrl(Const.JAVESCRIP_METHOD);
+                }
+                mListener.onPageFinished(view, url);
+            }
+        }
+
     }
 }
